@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Insight News PRO</title>
+  <meta name="description" content="AI-powered news platform dengan generator artikel yang aman, SEO friendly, dan aksesibel." />
+  <!-- Open Graph untuk share sosial -->
+  <meta property="og:title" content="Global Insight News PRO" />
+  <meta property="og:description" content="Generator artikel aman & SEO-ready dalam satu file HTML." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-domain.netlify.app/" />
+  <meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDP...' placeholder base64'..."/>
+  <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAIAB..."/>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e2e8f0;
+      --brand: #38bdf8;
+      --muted: #94a3b8;
+      --shadow: 0 4px 14px rgba(0,0,0,.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Arial, sans-serif; min-height: 100%; }
+    header { padding: 20px; text-align: center; background: #020617; }
+    h1 { margin: 0; font-size: 28px; }
+    main.container { padding: 20px; max-width: 900px; margin: auto; }
+    .card {
+      background: #0b1022;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid #1e1e3a;
+      box-shadow: var(--shadow);
+    }
+    input {
+      padding: 12px;
+      width: 70%;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      margin-right: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+    }
+    input:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
+    button {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      background: var(--brand);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .loader { margin-top: 12px; font-style: italic; color: var(--muted); }
+    #output { margin-top: 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .error { color: #fecaca; background: #7f1d1d; padding: 8px; border-radius: 6px; margin-top: 8px; }
+    @media (max-width: 600px) {
+      input { width: 100%; margin-right: 0; margin-bottom: 8px; }
+      button { width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 Global Insight News PRO</h1>
+    <p>AI Auto Generate News + SEO Ready</p>
+  </header>
+
+  <main class="container" role="main" aria-label="Area generator artikel">
+    <section class="card" aria-labelledby="generate-title" id="generate-section" aria-describedby="generate-desc">
+      <h2 id="generate-title" style="margin-top:0;">Generate Article</h2>
+      <p id="generate-desc" style="margin:0 0 8px 0; color:var(--muted);">Masukkan topik dan klik Generate. Konten akan di-sanitasi dan ditampilkan secara aman.</p>
+
+      <label for="topic" class="sr-only">Topik artikel</label>
+      <input id="topic" placeholder="Masukkan topik..." aria-label="Topik artikel" />
+      <button id="generateBtn" aria-label="Generate artikel">Generate</button>
+
+      <div id="loader" class="loader" aria-live="polite" aria-label="Loading" hidden>Generating...</div>
+      <div id="error" class="error" role="alert" aria-live="assertive" hidden></div>
+    </section>
+
+    <section id="output" class="card" aria-label="Hasil generate" hidden></section>
+  </main>
+
+  <footer>
+    <p>© 2026 Global Insight | Auto SEO Optimized</p>
+  </footer>
+
+  <script>
+    (function() {
+      const topicInput = document.getElementById('topic');
+      const generateBtn  = document.getElementById('generateBtn');
+      const loader       = document.getElementById('loader');
+      const output       = document.getElementById('output');
+      const errorBox     = document.getElementById('error');
+
+      function sanitize(text) {
+        const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
+        return String(text).replace(/[&<>"']/g, (m) => map[m]);
+      }
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.hidden = false;
+      }
+      function clearError() {
+        errorBox.textContent = '';
+        errorBox.hidden = true;
+      }
+
+      function validateTopic(raw) {
+        if (!raw || !raw.trim()) { showError("Masukkan topik dulu"); return null; }
+        const t = raw.trim();
+        if (t.length < 3) { showError("Topik terlalu pendek (min 3 karakter)."); return null; }
+        clearError();
+        return t;
+      }
+
+      async function generate() {
+        const raw = topicInput.value;
+        const topicRaw = validateTopic(raw);
+        if (!topicRaw) return;
+
+        loader.hidden = false;
+        generateBtn.disabled = true;
+        output.hidden = true;
+        output.innerHTML = '';
+        clearError();
+
+        try { await new Promise(r => setTimeout(r, 600)); } catch { showError("Terjadi kesalahan saat memproses."); loader.hidden = true; generateBtn.disabled = false; return; }
+
+        const safeTopic = sanitize(topicRaw);
+        const content = `
+          <h2>${safeTopic}</h2>
+          <p><strong>${safeTopic}</strong> sedang menjadi topik hangat secara global. Artikel ini dihasilkan secara otomatis dan dioptimalkan untuk SEO.</p>
+          <p>Konten ini disusun untuk contoh implementasi. Sesuaikan dengan sumber berita asli dan tambahkan analisis untuk nilai tambah pembaca.</p>
+        `;
+        output.innerHTML = content;
+        output.hidden = false;
+
+        loader.hidden = true;
+        generateBtn.disabled = false;
+      }
+
+      generateBtn.addEventListener('click', generate);
+      topicInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') generate(); });
+
+      window.addEventListener('load', () => topicInput.focus());
+    })();
+  </script>
+</body>
+</html>
