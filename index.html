@@ -1,158 +1,166 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Insight News PRO</title>
-  <meta name="description" content="AI-powered news platform dengan generator artikel yang aman, SEO friendly, dan aksesibel." />
-  <!-- Open Graph untuk share sosial -->
-  <meta property="og:title" content="Global Insight News PRO" />
-  <meta property="og:description" content="Generator artikel aman & SEO-ready dalam satu file HTML." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-domain.netlify.app/" />
-  <meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDP...' placeholder base64'..."/>
-  <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAIAB..."/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empire Game Dashboard</title>
 
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --text: #e2e8f0;
-      --brand: #38bdf8;
-      --muted: #94a3b8;
-      --shadow: 0 4px 14px rgba(0,0,0,.25);
-    }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Arial, sans-serif; min-height: 100%; }
-    header { padding: 20px; text-align: center; background: #020617; }
-    h1 { margin: 0; font-size: 28px; }
-    main.container { padding: 20px; max-width: 900px; margin: auto; }
-    .card {
-      background: #0b1022;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      border: 1px solid #1e1e3a;
-      box-shadow: var(--shadow);
-    }
-    input {
-      padding: 12px;
-      width: 70%;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      margin-right: 10px;
-      background: #0b1220;
-      color: var(--text);
-      outline: none;
-    }
-    input:focus { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
-    button {
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: none;
-      background: var(--brand);
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .loader { margin-top: 12px; font-style: italic; color: var(--muted); }
-    #output { margin-top: 16px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    .error { color: #fecaca; background: #7f1d1d; padding: 8px; border-radius: 6px; margin-top: 8px; }
-    @media (max-width: 600px) {
-      input { width: 100%; margin-right: 0; margin-bottom: 8px; }
-      button { width: auto; }
-    }
-  </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background: radial-gradient(circle, #0f172a, #020617);
+  color: white;
+  text-align: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  margin: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0,255,255,0.3);
+}
+
+.glow {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 25px #00ffff;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #00ffff, #3b82f6);
+  color: black;
+  font-weight: bold;
+  margin-top: 10px;
+  box-shadow: 0 0 15px #00ffff;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>🚀 Global Insight News PRO</h1>
-    <p>AI Auto Generate News + SEO Ready</p>
-  </header>
 
-  <main class="container" role="main" aria-label="Area generator artikel">
-    <section class="card" aria-labelledby="generate-title" id="generate-section" aria-describedby="generate-desc">
-      <h2 id="generate-title" style="margin-top:0;">Generate Article</h2>
-      <p id="generate-desc" style="margin:0 0 8px 0; color:var(--muted);">Masukkan topik dan klik Generate. Konten akan di-sanitasi dan ditampilkan secara aman.</p>
+<h1 class="glow">🚀 Empire Tycoon Web</h1>
 
-      <label for="topic" class="sr-only">Topik artikel</label>
-      <input id="topic" placeholder="Masukkan topik..." aria-label="Topik artikel" />
-      <button id="generateBtn" aria-label="Generate artikel">Generate</button>
+<div class="card">
+  <h3>💰 Cash</h3>
+  <h1 id="cash" class="glow">$0</h1>
 
-      <div id="loader" class="loader" aria-live="polite" aria-label="Loading" hidden>Generating...</div>
-      <div id="error" class="error" role="alert" aria-live="assertive" hidden></div>
-    </section>
+  <p>⚡ Income: <span id="income">0</span>/sec</p>
 
-    <section id="output" class="card" aria-label="Hasil generate" hidden></section>
-  </main>
+  <button onclick="upgrade()">🚀 Upgrade Income</button>
+</div>
 
-  <footer>
-    <p>© 2026 Global Insight | Auto SEO Optimized</p>
-  </footer>
+<div class="card">
+  <h3>🏆 Level: <span id="level">1</span></h3>
+  <p>Achievement: <span id="achievement">Beginner</span></p>
+</div>
 
-  <script>
-    (function() {
-      const topicInput = document.getElementById('topic');
-      const generateBtn  = document.getElementById('generateBtn');
-      const loader       = document.getElementById('loader');
-      const output       = document.getElementById('output');
-      const errorBox     = document.getElementById('error');
+<div class="card">
+  <h3>📊 Net Worth</h3>
+  <canvas id="lineChart"></canvas>
+</div>
 
-      function sanitize(text) {
-        const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
-        return String(text).replace(/[&<>"']/g, (m) => map[m]);
-      }
+<div class="card">
+  <h3>🥧 Assets</h3>
+  <canvas id="pieChart"></canvas>
+</div>
 
-      function showError(msg) {
-        errorBox.textContent = msg;
-        errorBox.hidden = false;
-      }
-      function clearError() {
-        errorBox.textContent = '';
-        errorBox.hidden = true;
-      }
+<script>
 
-      function validateTopic(raw) {
-        if (!raw || !raw.trim()) { showError("Masukkan topik dulu"); return null; }
-        const t = raw.trim();
-        if (t.length < 3) { showError("Topik terlalu pendek (min 3 karakter)."); return null; }
-        clearError();
-        return t;
-      }
+// DATA
+let cash = 1000;
+let income = 50;
+let level = 1;
 
-      async function generate() {
-        const raw = topicInput.value;
-        const topicRaw = validateTopic(raw);
-        if (!topicRaw) return;
+// LOAD SAVE
+if(localStorage.getItem("game")){
+  let save = JSON.parse(localStorage.getItem("game"));
+  cash = save.cash;
+  income = save.income;
+  level = save.level;
+}
 
-        loader.hidden = false;
-        generateBtn.disabled = true;
-        output.hidden = true;
-        output.innerHTML = '';
-        clearError();
+// UPDATE UI
+function updateUI(){
+  document.getElementById("cash").innerText = "$" + Math.floor(cash);
+  document.getElementById("income").innerText = income;
+  document.getElementById("level").innerText = level;
 
-        try { await new Promise(r => setTimeout(r, 600)); } catch { showError("Terjadi kesalahan saat memproses."); loader.hidden = true; generateBtn.disabled = false; return; }
+  // achievement
+  let ach = "Beginner";
+  if(cash > 10000) ach = "Pro Player";
+  if(cash > 1000000) ach = "Tycoon";
+  if(cash > 100000000) ach = "Legend 🔥";
+  document.getElementById("achievement").innerText = ach;
+}
 
-        const safeTopic = sanitize(topicRaw);
-        const content = `
-          <h2>${safeTopic}</h2>
-          <p><strong>${safeTopic}</strong> sedang menjadi topik hangat secara global. Artikel ini dihasilkan secara otomatis dan dioptimalkan untuk SEO.</p>
-          <p>Konten ini disusun untuk contoh implementasi. Sesuaikan dengan sumber berita asli dan tambahkan analisis untuk nilai tambah pembaca.</p>
-        `;
-        output.innerHTML = content;
-        output.hidden = false;
+// AUTO MONEY
+setInterval(()=>{
+  cash += income;
+  updateUI();
+  saveGame();
+},1000);
 
-        loader.hidden = true;
-        generateBtn.disabled = false;
-      }
+// UPGRADE
+function upgrade(){
+  if(cash >= 500){
+    cash -= 500;
+    income += 20;
+    level++;
+  }
+}
 
-      generateBtn.addEventListener('click', generate);
-      topicInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') generate(); });
+// SAVE
+function saveGame(){
+  localStorage.setItem("game", JSON.stringify({cash, income, level}));
+}
 
-      window.addEventListener('load', () => topicInput.focus());
-    })();
-  </script>
+// LINE CHART
+const ctx1 = document.getElementById('lineChart');
+let dataPoints = [cash];
+
+const chart = new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: ['1'],
+    datasets: [{
+      label: 'Net Worth',
+      data: dataPoints,
+      borderColor: '#00ffff'
+    }]
+  }
+});
+
+setInterval(()=>{
+  dataPoints.push(cash);
+  chart.data.labels.push('');
+  chart.update();
+},2000);
+
+// PIE CHART
+new Chart(document.getElementById('pieChart'), {
+  type: 'pie',
+  data: {
+    labels: ['Cash','Business','Investasi','Properti'],
+    datasets: [{
+      data: [40,30,20,10],
+      backgroundColor: ['#00ffff','#22c55e','#f59e0b','#ef4444']
+    }]
+  }
+});
+
+updateUI();
+
+</script>
+
 </body>
 </html>
