@@ -1,166 +1,394 @@
+```html
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Empire Game Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius Click & Earn Pro Max</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --secondary-dark: #020617;
+            --accent-green: #22c55e;
+            --accent-blue: #00ffff;
+            --accent-yellow: #fbbf24;
+            --dark-card: #111827;
+            --light-text: #f8fafc;
+            --gray-text: #94a3b8;
+            --premium-bg: rgba(34, 197, 94, 0.1);
+            --premium-border: rgba(34, 197, 94, 0.3);
+            --warning-color: #f97316;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: var(--primary-dark);
+            color: var(--light-text);
+            margin: 0;
+            text-align: center;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* HEADER STYLES - Tetap sama */
+        header {
+            padding: 1.5rem;
+            background: var(--secondary-dark);
+            border-bottom: 4px solid var(--accent-green);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo i {
+            color: var(--accent-green);
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .user-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .stat-card {
+            background: rgba(17, 24, 39, 0.7);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            min-width: 140px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--gray-text);
+            margin-bottom: 0.3rem;
+        }
+        .stat-card .value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+        .stat-card .value.blue { color: var(--accent-blue); }
+        .stat-card .value.yellow { color: var(--accent-yellow); }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        /* ✅ PERBAIKAN #1: MAIN CONTAINER & CARD STYLES */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .card {
+            background: var(--dark-card);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-green);
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card-full {
+            background: rgba(34, 197, 94, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+        .stat-card-full h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card-full .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
 
-<style>
-body {
-  font-family: Arial;
-  background: radial-gradient(circle, #0f172a, #020617);
-  color: white;
-  text-align: center;
-}
+        /* ✅ PERBAIKAN #2: CLICK AREA */
+        .click-area {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(0, 255, 255, 0.1));
+            border: 3px solid var(--accent-green);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .click-area:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.3);
+        }
+        .click-area:active {
+            transform: scale(0.98);
+        }
+        .click-area h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-green);
+        }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  margin: 15px;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 25px rgba(0,255,255,0.3);
-}
+        /* ✅ PERBAIKAN #3: GRID & BUTTONS */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: rgba(17, 24, 39, 0.5);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--accent-green);
+        }
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-green);
+            margin: 1rem 0;
+        }
+        .action-btn, .btn {
+            background: linear-gradient(45deg, var(--accent-green), #16a34a);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .action-btn:hover, .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(34, 197, 94, 0.4);
+        }
+        .btn-yellow {
+            background: linear-gradient(45deg, var(--accent-yellow), #f59e0b);
+        }
+        .btn-blue {
+            background: linear-gradient(45deg, var(--accent-blue), #00cccc);
+        }
 
-.glow {
-  color: #00ffff;
-  text-shadow: 0 0 10px #00ffff, 0 0 25px #00ffff;
-}
+        /* ✅ PERBAIKAN #4: ACHIEVEMENTS SECTION - LENGKAP */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .achievement {
+            background: rgba(251, 191, 36, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-yellow);
+        }
+        .achievement.unlocked {
+            background: rgba(34, 197, 94, 0.2);
+            border-left-color: var(--accent-green);
+        }
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(45deg, #00ffff, #3b82f6);
-  color: black;
-  font-weight: bold;
-  margin-top: 10px;
-  box-shadow: 0 0 15px #00ffff;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-</style>
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 1.5rem; }
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
-
 <body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>Genius Click & Earn Pro Max</h1>
+            </div>
+            <div class="user-stats">
+                <div class="stat-card">
+                    <h3>Cash</h3>
+                    <div class="value">$<span id="cash">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <h3>Income/sec</h3>
+                    <div class="value blue" id="income">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Level</h3>
+                    <div class="value" id="level">1</div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<h1 class="glow">🚀 Empire Tycoon Web</h1>
+    <div class="main-container">
+        <!-- ✅ PERBAIKAN #5: ACHIEVEMENTS SECTION LENGKAP -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-trophy"></i> Achievements</h2>
+            <div class="achievements-grid">
+                <div class="achievement" id="ach1">
+                    <h4>First Click</h4>
+                    <p>Make your first click</p>
+                    <span class="status">🔒 Locked</span>
+                </div>
+                <div class="achievement" id="ach2">
+                    <h4>10 Clicks</h4>
+                    <p>Reach 10 total clicks</p>
+                    <span class="status">🔒 Locked</span>
+                </div>
+                <div class="achievement" id="ach3">
+                    <h4>100 Clicks</h4>
+                    <p>Reach 100 total clicks</p>
+                    <span class="status">🔒 Locked</span>
+                </div>
+            </div>
+        </div>
 
-<div class="card">
-  <h3>💰 Cash</h3>
-  <h1 id="cash" class="glow">$0</h1>
+        <!-- Main Click Area -->
+        <div class="click-area" onclick="klik()">
+            <h3>Click to Earn Cash!</h3>
+            <div class="click-counter">Clicks: <span id="click-counter">0</span></div>
+            <div class="click-message">Every click generates <strong>$10</strong> cash plus <strong>5 points</strong></div>
+            <i class="fas fa-mouse-pointer" style="font-size: 3rem; margin-top: 1rem; color: var(--accent-green);"></i>
+        </div>
+    </div>
 
-  <p>⚡ Income: <span id="income">0</span>/sec</p>
+    <!-- ✅ PERBAIKAN #6: JAVASCRIPT FUNCTIONALITY -->
+    <script>
+        // Game state
+        let gameState = {
+            cash: 0,
+            clicks: 0,
+            points: 0,
+            level: 1,
+            incomePerSec: 0
+        };
 
-  <button onclick="upgrade()">🚀 Upgrade Income</button>
-</div>
+        // ✅ IMPLEMENTASI FUNGSI KLIK
+        function klik() {
+            gameState.clicks++;
+            gameState.cash += 10; // $10 per click
+            gameState.points += 5; // 5 points per click
+            
+            // Update UI
+            document.getElementById('click-counter').textContent = gameState.clicks;
+            document.getElementById('cash').textContent = gameState.cash.toFixed(0);
+            
+            // Visual feedback
+            const clickArea = document.querySelector('.click-area');
+            clickArea.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                clickArea.style.transform = 'scale(1)';
+            }, 100);
 
-<div class="card">
-  <h3>🏆 Level: <span id="level">1</span></h3>
-  <p>Achievement: <span id="achievement">Beginner</span></p>
-</div>
+            // Check achievements
+            checkAchievements();
+            
+            console.log('Click registered:', gameState); // Debug
+        }
 
-<div class="card">
-  <h3>📊 Net Worth</h3>
-  <canvas id="lineChart"></canvas>
-</div>
+        // ✅ IMPLEMENTASI ACHIEVEMENTS
+        function checkAchievements() {
+            const achievements = {
+                ach1: gameState.clicks >= 1,
+                ach2: gameState.clicks >= 10,
+                ach3: gameState.clicks >= 100
+            };
 
-<div class="card">
-  <h3>🥧 Assets</h3>
-  <canvas id="pieChart"></canvas>
-</div>
+            Object.keys(achievements).forEach(id => {
+                const elem = document.getElementById(id);
+                if (achievements[id] && elem) {
+                    elem.classList.add('unlocked');
+                    elem.querySelector('.status').textContent = '✅ Unlocked!';
+                }
+            });
+        }
 
-<script>
+        // ✅ FUNGSI LAINNYA (STUBS untuk menghindari error)
+        function purchaseProduct(product) {
+            alert(`Purchased: ${product} - Thank you for your purchase!`);
+        }
+        function subscribe(plan) {
+            alert(`Subscribed to ${plan} plan! Welcome aboard!`);
+        }
+        function copyReferral() {
+            alert('Referral link copied!');
+        }
+        function showModal(type) {
+            alert(`${type} modal would open here`);
+        }
 
-// DATA
-let cash = 1000;
-let income = 50;
-let level = 1;
+        // Auto-save game state
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('geniusGameState', JSON.stringify(gameState));
+        });
 
-// LOAD SAVE
-if(localStorage.getItem("game")){
-  let save = JSON.parse(localStorage.getItem("game"));
-  cash = save.cash;
-  income = save.income;
-  level = save.level;
-}
+        // Load game state
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('geniusGameState');
+            if (saved) {
+                gameState = { ...gameState, ...JSON.parse(saved) };
+                // Update UI dengan data tersimpan
+                document.getElementById('cash').textContent = gameState.cash.toFixed(0);
+                document.getElementById('click-counter').textContent = gameState.clicks;
+                checkAchievements();
+            }
+        });
 
-// UPDATE UI
-function updateUI(){
-  document.getElementById("cash").innerText = "$" + Math.floor(cash);
-  document.getElementById("income").innerText = income;
-  document.getElementById("level").innerText = level;
-
-  // achievement
-  let ach = "Beginner";
-  if(cash > 10000) ach = "Pro Player";
-  if(cash > 1000000) ach = "Tycoon";
-  if(cash > 100000000) ach = "Legend 🔥";
-  document.getElementById("achievement").innerText = ach;
-}
-
-// AUTO MONEY
-setInterval(()=>{
-  cash += income;
-  updateUI();
-  saveGame();
-},1000);
-
-// UPGRADE
-function upgrade(){
-  if(cash >= 500){
-    cash -= 500;
-    income += 20;
-    level++;
-  }
-}
-
-// SAVE
-function saveGame(){
-  localStorage.setItem("game", JSON.stringify({cash, income, level}));
-}
-
-// LINE CHART
-const ctx1 = document.getElementById('lineChart');
-let dataPoints = [cash];
-
-const chart = new Chart(ctx1, {
-  type: 'line',
-  data: {
-    labels: ['1'],
-    datasets: [{
-      label: 'Net Worth',
-      data: dataPoints,
-      borderColor: '#00ffff'
-    }]
-  }
-});
-
-setInterval(()=>{
-  dataPoints.push(cash);
-  chart.data.labels.push('');
-  chart.update();
-},2000);
-
-// PIE CHART
-new Chart(document.getElementById('pieChart'), {
-  type: 'pie',
-  data: {
-    labels: ['Cash','Business','Investasi','Properti'],
-    datasets: [{
-      data: [40,30,20,10],
-      backgroundColor: ['#00ffff','#22c55e','#f59e0b','#ef4444']
-    }]
-  }
-});
-
-updateUI();
-
-</script>
-
+        console.log('Genius Click & Earn loaded successfully! 🚀');
+    </script>
 </body>
 </html>
+```
